@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ZERA Web Scanner</title>
+</head>
+<body>
+    <h2>ZERA Web Vulnerability Scanner</h2>
+    <form method="POST">
+        <input type="text" name="url" placeholder="Enter target URL" required size="50">
+        <button type="submit">Scan</button>
+    </form>
+
+    {% if result %}
+        <h3>Scan Results</h3>
+        <p><strong>XSS Found:</strong> {{ result.xss|length }}</p>
+        <ul>{% for url in result.xss %}<li>{{ url }}</li>{% endfor %}</ul>
+
+        <p><strong>SQLi Found:</strong> {{ result.sqli|length }}</p>
+        <ul>{% for url in result.sqli %}<li>{{ url }}</li>{% endfor %}</ul>
+
+        <p><strong>Open Redirects:</strong> {{ result.open_redirect|length }}</p>
+        <ul>{% for url in result.open_redirect %}<li>{{ url }}</li>{% endfor %}</ul>
+
+        <p><strong>Missing Security Headers:</strong></p>
+        <ul>
+        {% for url, headers in result.missing_headers %}
+            <li>{{ url }}: {{ headers|join(", ") }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+
